@@ -1,0 +1,14 @@
+﻿<MudDialog>
+    <DialogContent>
+        <MudForm @bind-IsValid="_formValid">
+            <MudTextField T="string" Label="Channel name" @bind-Value="Request.Name" Required="true" Validation="@(new Func<string, string>(VerifyName))" DebounceInterval="100"/>
+            <MudTextField T="int?" Label="Ministra ID" @bind-Value="Request.MinistraId" Required="true" Validation="@(new Func<int?, string>(VerifyId))"/>
+            <MudCheckBox T="bool" Label="Is Active" @bind-Checked="Request.IsActive"/>
+            <MudCheckBox T="bool" Label="Is HD" @bind-Checked="Request.IsHd"/>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit" Disabled="@(!_formValid)">Add</MudButton>
+    </DialogActions>
+</MudDialog>

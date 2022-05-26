@@ -1,0 +1,18 @@
+﻿@using OSS.IPTV.Ministra.Admin.Extensions
+<MudDialog>
+    <DialogContent>
+        <MudText Typo="Typo.h6">Editing channel</MudText>
+        <MudText Typo="Typo.h5">@Channel.Name</MudText>
+        <MudForm @bind-IsValid="_formValid">
+            <MudTextField T="int" Label="Channel ID" @bind-Value="_channelCopy.ChannelId" Disabled="true"/>
+            <MudTextField T="int?" Label="Ministra ID" @bind-Value="_channelCopy.MinistraId" Required="true" Validation="@(new Func<int?, string>(VerifyId))"/>
+            <MudTextField T="string" Label="Channel name" @bind-Value="_channelCopy.Name" Required="true" Validation="@(new Func<string, string>(VerifyName))" DebounceInterval="100"/>
+            <MudCheckBox T="bool?" Label="Active" @bind-Checked="_channelCopy.IsActive"/>
+            <MudCheckBox T="bool?" Label="HD" @bind-Checked="_channelCopy.IsHd"/>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit" Disabled="@(!_formValid || !_channelCopy.GetModifiedProperties(Channel).Any())">Save</MudButton>
+    </DialogActions>
+</MudDialog>

@@ -1,0 +1,56 @@
+﻿@using static OSS.IPTV.Ministra.Admin.Enums.LogEnums
+
+<MudDialog>
+    <DialogContent>
+        <MudText Typo="Typo.h6">Log details</MudText>
+        <MudGrid>
+            <MudItem xs="12">
+                <MudPaper >
+                    <p>Item type: @((ItemType)Log.UpdatedItemType)</p>
+                    <p>Item name: @Log.ItemName</p>
+                    <p>Action performed: @((ChangeType)Log.ChangeType)</p>
+                    @{
+                        if ((Log.ChangeType == (int)ChangeType.UpdateChannel || Log.ChangeType == (int)ChangeType.UpdatePackage) && Log.UpdatedFields != null)
+                        {
+                            <p>Updated fields:</p>
+                            var updatedFields = Log.UpdatedFields.Split(',');
+                            <MudList>
+                            @foreach (var field in updatedFields)
+                            {
+                                <MudListItem Text="@field"></MudListItem>
+                            }
+                            </MudList>
+                        }
+                        else if ((Log.ChangeType == (int)ChangeType.AddChannelsToPackage || Log.ChangeType == (int)ChangeType.RemoveChannelsFromPackage) && Log.AffectedItemIds != null)
+                        {
+                            <p>Affected channels:</p>
+                            <MudList>
+                            @foreach (var channel in Channels)
+                            {
+                                <MudListItem Text="@channel.Name"></MudListItem>
+                            }
+                            </MudList>
+                        }
+                        else if ((Log.ChangeType == (int)ChangeType.AddChannelToPackages || Log.ChangeType == (int)ChangeType.RemoveChannelsFromPackage) && Log.AffectedItemIds != null)
+                        {
+                            <p>Affected packages:</p>
+                            <MudList>
+                            @foreach (var package in Packages)
+                            {
+                                <MudListItem Text="@package.Name"></MudListItem>
+                            }
+                            </MudList>
+                        }
+                    }
+                    <p>Changed at: @Log.LogTime</p>
+                    <p>Changed by: @Log.Username</p>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </DialogContent>
+    <DialogActions>
+        <MudButtonGroup Variant="Variant.Filled">
+            <MudButton OnClick="OnCloseClick">Close</MudButton>
+        </MudButtonGroup>
+    </DialogActions>
+</MudDialog>

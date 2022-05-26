@@ -1,0 +1,67 @@
+﻿@page "/logs"
+@page "/logs/{Type:int}/{Id:int}"
+
+@using static OSS.IPTV.Ministra.Admin.Enums.LogEnums
+
+<PageTitle>Logs</PageTitle>
+<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+    <MudGrid>
+        <MudItem xs="2">
+            <MudPaper Class="pa-2">
+                <EditForm Model="Filter">
+                    <MudTextField T="int?" Label="Item ID" @bind-Value="Filter.ItemId" />
+                    <MudSelect T="ItemType?" @bind-Value="Filter.ItemType" Label="Item Type">
+                        @foreach (var item in Enum.GetValues(typeof(ItemType)).Cast<ItemType>())
+                        {
+                            <MudSelectItem T="ItemType?" Value="item">@item.ToString()</MudSelectItem>
+                        }
+                    </MudSelect>
+                    <MudSelect T="ChangeType?" @bind-Value="Filter.ChangeType" Label="Change type">
+                        @foreach (var item in Enum.GetValues(typeof(ChangeType)).Cast<ChangeType>())
+                        {
+                            <MudSelectItem T="ChangeType?" Value="item">@item.ToString()</MudSelectItem>
+                        }
+                    </MudSelect>
+                    <MudDatePicker Label="Log from" Editable="true" @bind-Date="Filter.LogFrom" Placeholder="Select Date" />
+                    <MudDatePicker Label="Log to" Editable="true" @bind-Date="Filter.LogTo" Placeholder="Select Date" />
+                    <br />
+                    <MudButtonGroup Color="Color.Primary" Variant="Variant.Filled" Class="w-100 mb-2">
+                        <MudButton ButtonType="ButtonType.Submit" OnClick="OnApplyClick" Class="w-50">Apply</MudButton>
+                        <MudButton ButtonType="ButtonType.Reset" OnClick="OnResetClick" Class="w-50">Reset</MudButton>
+                    </MudButtonGroup>
+                </EditForm>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="10">
+            <MudPaper>
+                <MudTable @ref="Table" T="TvLogsNamed" ServerData="state => LoadItems(state)" Dense="true" FixedFooter="true" FixedHeader="true" Height="85vh">
+                    <HeaderContent>
+                        <MudTh>Item ID</MudTh>
+                        <MudTh>Item type</MudTh>
+                        <MudTh>Item name</MudTh>
+                        <MudTh>Change type</MudTh>
+                        <MudTh>Log date</MudTh>
+                        <MudTh>User</MudTh>
+                        <MudTh>Details</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="ItemID">@context.UpdatedItemId</MudTd>
+                        <MudTd DataLabel="Item type">@((ItemType)context.UpdatedItemType)</MudTd>
+                        <MudTd DataLabel="Item name">@context.ItemName</MudTd>
+                        <MudTd DataLabel="Change type">@((ChangeType)context.ChangeType)</MudTd>
+                        <MudTd DataLabel="Log date">@context.LogTime</MudTd>
+                        <MudTd DataLabel="User">@context.Username</MudTd>
+                        <MudTd DataLabel="Details">
+                            <MudButtonGroup Variant="Variant.Filled">
+                                <MudButton ButtonType="ButtonType.Button" Size="Size.Small" OnClick="@(_ => OnDetailsClick(context))">Details</MudButton>
+                            </MudButtonGroup>
+                        </MudTd>
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager PageSizeOptions="new[] {15, 25, 50, 100, 200, 500}" />
+                    </PagerContent>
+                </MudTable>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</MudContainer>

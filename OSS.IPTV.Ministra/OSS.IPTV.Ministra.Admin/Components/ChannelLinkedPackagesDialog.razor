@@ -1,0 +1,97 @@
+﻿@using OSS.IPTV.Ministra.Admin.Models.Package
+
+<MudDialog>
+    <DialogContent>
+        <MudText Typo="Typo.h6">Viewing packages containing</MudText>
+        <MudText Typo="Typo.h5">@ChannelName</MudText>
+        <MudGrid>
+            <MudItem xs="6">
+                <MudPaper>
+                    <MudTable T="PackageMin" Items="Response.AvailablePackages" RowsPerPage="10000" Dense="true" FixedFooter="true" Filter="new Func<PackageMin, bool>(FilterAvailable)" FixedHeader="true" Height="60vh" @bind-SelectedItems="SelectedPackagesWithoutChannel" MultiSelection="!SelectedPackagesWithChannel.Any()">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Not present in packages</MudText>
+                            <MudSpacer/>
+                            <MudTextField @bind-Value="SearchAvailablePackages" Placeholder="Search" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0" DebounceInterval="500"></MudTextField>
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>ID</MudTh>
+                            <MudTh>Name</MudTh>
+                            <MudTh>Type</MudTh>
+                            <MudTh>Active</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="ID">@context.Id</MudTd>
+                            <MudTd DataLabel="Name">
+                                <MudHighlighter Text="@context.Name" HighlightedText="@SearchAvailablePackages"/>
+                            </MudTd>
+                            <MudTd DataLabel="Type">@PackageTypes.Find(p => p.TypeId == context.Type).Name</MudTd>
+                            <MudTd DataLabel="Active">@if (context.Active)
+                                                      {
+                                                          <span>True</span>
+                                                      }
+                                                      else
+                                                      {
+                                                          <span class="red-text">False</span>
+                                                      }
+                                </MudTd>
+                        </RowTemplate>
+                    </MudTable>
+                    <MudToolBar Dense="true">
+                        <span>@SelectedPackagesWithoutChannel.Count selected </span>
+                        <span>/ @Response.AvailablePackages.Count total</span>
+                        <span>/ @AddPending.Count pending</span>
+                        <MudSpacer/>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnPackageAddClick" Disabled="!SelectedPackagesWithoutChannel.Any()">Add to packages</MudButton>
+                    </MudToolBar>
+                </MudPaper>
+            </MudItem>
+            <MudItem xs="6">
+                <MudPaper>
+                    <MudTable T="PackageMin" Items="Response.CurrentPackages" RowsPerPage="10000" Dense="true" FixedFooter="true" Filter="new Func<PackageMin, bool>(FilterExisting)" FixedHeader="true" Height="60vh" @bind-SelectedItems="SelectedPackagesWithChannel" MultiSelection="!SelectedPackagesWithoutChannel.Any()">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Present in packages</MudText>
+                            <MudSpacer/>
+                            <MudTextField @bind-Value="SearchExistingPackages" Placeholder="Search" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0" DebounceInterval="500"></MudTextField>
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>ID</MudTh>
+                            <MudTh>Name</MudTh>
+                            <MudTh>Type</MudTh>
+                            <MudTh>Active</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="ID">@context.Id</MudTd>
+                            <MudTd DataLabel="Name">
+                                <MudHighlighter Text="@context.Name" HighlightedText="@SearchExistingPackages"/>
+                            </MudTd>
+                            <MudTd DataLabel="Type">@PackageTypes.Find(p => p.TypeId == context.Type).Name</MudTd>
+                            <MudTd DataLabel="Active">
+                                @if (context.Active)
+                                {
+                                    <span>True</span>
+                                }
+                                else
+                                {
+                                    <span class="red-text">False</span>
+                                }
+                            </MudTd>
+                        </RowTemplate>
+                    </MudTable>
+                    <MudToolBar Dense="true">
+                        <span>@SelectedPackagesWithChannel.Count selected </span>
+                        <span>/ @Response.CurrentPackages.Count total</span>
+                        <span>/ @RemovePending.Count pending</span>
+                        <MudSpacer/>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnPackageRemoveClick" Disabled="!SelectedPackagesWithChannel.Any()">Remove from packages</MudButton>
+                    </MudToolBar>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </DialogContent>
+    <DialogActions>
+        <MudButtonGroup Variant="Variant.Filled">
+            <MudButton OnClick="OnApplyClick" Disabled="!(AddPending.Any() || RemovePending.Any())">Apply</MudButton>
+            <MudButton OnClick="OnCancelClick">Cancel</MudButton>
+        </MudButtonGroup>
+    </DialogActions>
+</MudDialog>

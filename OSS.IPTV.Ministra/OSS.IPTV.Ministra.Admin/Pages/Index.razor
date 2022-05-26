@@ -1,0 +1,66 @@
+﻿@page "/"
+@using OSS.IPTV.Ministra.Repository.Entities
+@inject NavigationManager NavigationManager
+
+<PageTitle>Index</PageTitle>
+<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+    <MudGrid>
+        <MudItem xs="2">
+            <MudPaper Class="pa-2">
+                <EditForm Model="Filter">
+                    <MudTextField T="string" Label="Channel name" @bind-Value="Filter.Name" />
+                    <MudTextField T="int?" Label="Ministra ID" @bind-Value="Filter.StalkerId" />
+                    <MudSelect T="int" @bind-Value="Filter.State" Label="Channel State">
+                        <MudSelectItem T="int" Value="1">Any</MudSelectItem>
+                        <MudSelectItem T="int" Value="2">Active</MudSelectItem>
+                        <MudSelectItem T="int" Value="3">Inactive</MudSelectItem>
+                    </MudSelect>
+                    <br />
+                    <MudButtonGroup Color="Color.Primary" Variant="Variant.Filled" Class="w-100 mb-2">
+                        <MudButton ButtonType="ButtonType.Submit" OnClick="OnApplyClick" Class="w-50">Apply</MudButton>
+                        <MudButton ButtonType="ButtonType.Reset" OnClick="OnResetClick" Class="w-50">Reset</MudButton>
+                    </MudButtonGroup>
+                    <MudButton ButtonType="ButtonType.Button" Variant="Variant.Filled" Size="Size.Small" OnClick="OnAddClick" Class="w-100">Add new channel</MudButton>
+                </EditForm>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="10">
+            <MudPaper>
+                <MudTable @ref="Table" T="TvChannel" ServerData="state => LoadItems(state)" Dense="true" FixedFooter="true" FixedHeader="true" Height="85vh">
+                    <HeaderContent>
+                        <MudTh><MudTableSortLabel SortLabel="channel_id" T="TvChannel">Channel ID</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortLabel="channel_name" T="TvChannel">Name</MudTableSortLabel></MudTh>
+                        <MudTh><MudTableSortLabel SortLabel="channel_ministra" T="TvChannel">Ministra ID</MudTableSortLabel></MudTh>
+                        <MudTh>Is Active</MudTh>
+                        <MudTh>Is HD</MudTh>
+                        <MudTh>Controls</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Channel ID">@context.ChannelId</MudTd>
+                        <MudTd DataLabel="Name">@context.Name</MudTd>
+                        <MudTd DataLabel="Ministra ID">@context.MinistraId</MudTd>
+                        <MudTd DataLabel="Is Active">@if (context.IsActive == true)
+                                                     {
+                                                         <span>True</span>
+                                                     }
+                                                     else
+                                                     {
+                                                         <span class="red-text">False</span>
+                                                     }</MudTd>
+                        <MudTd DataLabel="Is HD">@context.IsHd</MudTd>
+                        <MudTd>
+                            <MudButtonGroup Variant="Variant.Filled" Size="Size.Small">
+                                <MudButton ButtonType="ButtonType.Button" OnClick="@(_ => OnEditClick(context))">Edit</MudButton>
+                                <MudButton ButtonType="ButtonType.Button" OnClick="@(_ => OnPackagesClick(context.ChannelId, context.Name))">Packages</MudButton>
+                                <MudButton ButtonType="ButtonType.Button" OnClick="@(_ => NavigationManager.NavigateTo($"logs/1/{context.ChannelId}"))">Logs</MudButton>
+                            </MudButtonGroup>
+                        </MudTd>
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager PageSizeOptions="new[] {15, 25, 50, 100, 200, 500}" />
+                    </PagerContent>
+                </MudTable>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</MudContainer>

@@ -1,0 +1,25 @@
+﻿@using OSS.IPTV.Ministra.Admin.Extensions
+<MudDialog>
+    <DialogContent>
+        <MudText Typo="Typo.h6">Editing package</MudText>
+        <MudText Typo="Typo.h5">@Package.Name</MudText>
+        <MudForm @bind-IsValid="_formValid">
+            <MudTextField T="int" Label="Package ID" @bind-Value="_packageCopy.PackageId" Disabled="true"/>
+            <MudTextField T="string" Label="Name" @bind-Value="_packageCopy.Name" Required="true"/>
+            <MudNumericField Label="Price" Min="0" @bind-Value="_packageCopy.Price" Required="@(_packageCopy.TypeId != 1)" Disabled="@(_packageCopy.TypeId == 1)"/>
+            <MudSelect T="int" Label="User type" @bind-Value="_packageUserType">
+                <MudSelectItem T="int" Value="1">Business</MudSelectItem>
+                <MudSelectItem T="int" Value="2">Home</MudSelectItem>
+                <MudSelectItem T="int" Value="3">Any</MudSelectItem>
+            </MudSelect>
+            <MudNumericField Label="Duration" Min="0" @bind-Value="_packageCopy.Duration" Required="true" Disabled="@(_packageCopy.TypeId == 1)"/>
+            <MudNumericField Label="Promo limit" Min="0" @bind-Value="_packageCopy.PromoLimit" Required="true" Disabled="@(_packageCopy.TypeId == 1)"/>
+            <MudCheckBox T="bool" Label="Active" @bind-Checked="_packageCopy.IsActive"/>
+            <MudCheckBox T="bool?" Label="Billing active" @bind-Checked="_packageCopy.IsBillingActive" Disabled="@(_packageCopy.TypeId != 2)"/>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit" Disabled="@(!_formValid || !_packageCopy.GetModifiedProperties(Package).Any())">Save</MudButton>
+    </DialogActions>
+</MudDialog>

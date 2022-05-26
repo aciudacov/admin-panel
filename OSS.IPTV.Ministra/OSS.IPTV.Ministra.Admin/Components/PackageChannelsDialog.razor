@@ -1,0 +1,73 @@
+﻿@using OSS.IPTV.Ministra.Admin.Data.Models.Channel
+@using OSS.IPTV.Ministra.Admin.Models.Channel
+
+<MudDialog>
+    <DialogContent>
+        <MudText Typo="Typo.h6">Viewing channels of package</MudText>
+        <MudText Typo="Typo.h5">@PackageName</MudText>
+        <MudGrid>
+            <MudItem xs="6">
+                <MudPaper>
+                    <MudTable T="ChannelMin" Items="TableData.ChannelsNotInPackage" RowsPerPage="10000" Dense="true" Filter="new Func<ChannelMin, bool>(FilterAvailable)" @bind-SelectedItems="SelectedToAdd" MultiSelection="!SelectedToRemove.Any()" FixedFooter="true" FixedHeader="true" Height="60vh">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Available channels</MudText>
+                            <MudSpacer/>
+                            <MudTextField @bind-Value="SearchAvailableChannels" Placeholder="Search" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0" DebounceInterval="500"></MudTextField>
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Ministra ID</MudTh>
+                            <MudTh>Channel name</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Ministra ID">@context.MinistraId</MudTd>
+                            <MudTd DataLabel="Channel name">
+                                <MudHighlighter Text="@context.Name" HighlightedText="@SearchAvailableChannels"/>
+                            </MudTd>
+                        </RowTemplate>
+                    </MudTable>
+                    <MudToolBar Dense="true">
+                        <span>@SelectedToAdd.Count selected</span>
+                        <span>/ @TableData.ChannelsNotInPackage.Count total</span>
+                        <span>/ @AddPending.Count pending</span>
+                        <MudSpacer/>
+                        <MudButton OnClick="OnChannelAddClick" Variant="Variant.Filled" Color="Color.Primary" Disabled="!SelectedToAdd.Any()">Add to package</MudButton>
+                    </MudToolBar>
+                </MudPaper>
+            </MudItem>
+            <MudItem xs="6">
+                <MudPaper>
+                    <MudTable T="ChannelMin" Items="TableData.ChannelsInPackage" RowsPerPage="10000" Dense="true" Filter="new Func<ChannelMin, bool>(FilterPackage)" @bind-SelectedItems="SelectedToRemove" MultiSelection="!SelectedToAdd.Any()" FixedFooter="true" FixedHeader="true" Height="60vh">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Package channels</MudText>
+                            <MudSpacer/>
+                            <MudTextField @bind-Value="SearchPackageChannels" Placeholder="Search" Clearable="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0" DebounceInterval="500"/>
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Ministra ID</MudTh>
+                            <MudTh>Channel name</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Channel ID">@context.MinistraId</MudTd>
+                            <MudTd DataLabel="Channel name">
+                                <MudHighlighter Text="@context.Name" HighlightedText="@SearchPackageChannels"/>
+                            </MudTd>
+                        </RowTemplate>
+                    </MudTable>
+                    <MudToolBar Dense="true">
+                        <span>@SelectedToRemove.Count selected</span>
+                        <span>/ @TableData.ChannelsInPackage.Count total</span>
+                        <span>/ @RemovePending.Count pending</span>
+                        <MudSpacer/>
+                        <MudButton OnClick="OnChannelRemoveClick" Variant="Variant.Filled" Color="Color.Primary" Disabled="!SelectedToRemove.Any()">Remove from package</MudButton>
+                    </MudToolBar>
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+    </DialogContent>
+    <DialogActions>
+        <MudButtonGroup Variant="Variant.Filled">
+            <MudButton OnClick="OnApplyClick" Disabled="!(AddPending.Any() || RemovePending.Any())">Apply</MudButton>
+            <MudButton OnClick="OnCancelClick">Cancel</MudButton>
+        </MudButtonGroup>
+    </DialogActions>
+</MudDialog>

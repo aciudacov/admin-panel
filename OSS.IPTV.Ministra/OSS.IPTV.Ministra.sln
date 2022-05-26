@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OSS.IPTV.Ministra.Admin", "OSS.IPTV.Ministra.Admin\OSS.IPTV.Ministra.Admin.csproj", "{A3790236-5B6F-4409-90F2-CA2DB8F43017}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OSS.IPTV.Ministra.Repository", "OSS.IPTV.Ministra.Repository\OSS.IPTV.Ministra.Repository.csproj", "{1079952C-4858-48B7-915C-6DFFCF035C7D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A3790236-5B6F-4409-90F2-CA2DB8F43017}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3790236-5B6F-4409-90F2-CA2DB8F43017}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3790236-5B6F-4409-90F2-CA2DB8F43017}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3790236-5B6F-4409-90F2-CA2DB8F43017}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1079952C-4858-48B7-915C-6DFFCF035C7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1079952C-4858-48B7-915C-6DFFCF035C7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1079952C-4858-48B7-915C-6DFFCF035C7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1079952C-4858-48B7-915C-6DFFCF035C7D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {10C2A6FC-138D-4524-A744-934DB38A4D2F}
+	EndGlobalSection
+EndGlobal

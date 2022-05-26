@@ -1,0 +1,27 @@
+﻿<MudDialog>
+    <DialogContent>
+        <MudForm @bind-IsValid="_formValid">
+            <MudTextField T="string" Label="Name" @bind-Value="Request.Name" Required="true"/>
+            <MudSelect T="int?" Label="Package type" Required="true" ValueChanged="ModifyComponentValues">
+                @foreach (var item in PackageTypes)
+                {
+                    <MudSelectItem T="int?" Value="item.TypeId">@item.Name</MudSelectItem>
+                }
+            </MudSelect>
+            <MudNumericField Label="Price" Min="0" @bind-Value="Request.Price" Required="@(Request.Type != 1)" Disabled="@(Request.Type == 1)"/>
+            <MudSelect T="int" Label="User type" @bind-Value="_packageUserType">
+                <MudSelectItem T="int" Value="1">Business</MudSelectItem>
+                <MudSelectItem T="int" Value="2">Home</MudSelectItem>
+                <MudSelectItem T="int" Value="3">Any</MudSelectItem>
+            </MudSelect>
+            <MudNumericField Label="Duration" Min="0" @bind-Value="Request.Duration" Required="true" Disabled="@(Request.Type == 1)"/>
+            <MudNumericField Label="Promo limit" Min="0" @bind-Value="Request.PromoLimit" Required="true" Disabled="@(Request.Type == 1)"/>
+            <MudCheckBox T="bool" Label="Active" @bind-Checked="Request.Active"/>
+            <MudCheckBox T="bool" Label="Billing active" @bind-Checked="Request.BillingActive" Disabled="@(Request.Type != 2)"/>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit" Disabled="@(!_formValid)">Add</MudButton>
+    </DialogActions>
+</MudDialog>

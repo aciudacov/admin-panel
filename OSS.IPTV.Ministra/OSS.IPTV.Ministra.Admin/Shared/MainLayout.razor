@@ -1,0 +1,28 @@
+﻿@inherits LayoutComponentBase
+
+<PageTitle>OSS.IPTV.Ministra.Admin</PageTitle>
+
+<MudDialogProvider />
+<MudSnackbarProvider />
+<MudThemeProvider IsDarkMode="LayoutService.IsDarkMode" IsDarkModeChanged="LayoutService.SetDarkMode"/>
+<MudLayout>
+    <MudAppBar Dense="true">
+        <MudText Typo="Typo.h4">Ministra Admin</MudText>
+        <MudButton Color="Color.Warning" Variant="@(Navigation.ToBaseRelativePath(Navigation.Uri) == "" ? Variant.Filled : Variant.Outlined)" OnClick="@(_ => Navigation.NavigateTo("/"))">Channels</MudButton>
+        <MudButton Color="Color.Warning" Variant="@(Navigation.ToBaseRelativePath(Navigation.Uri).StartsWith("packages") ? Variant.Filled : Variant.Outlined)" OnClick="@(_ => Navigation.NavigateTo("/packages"))">Packages</MudButton>
+        <MudButton Color="Color.Warning" Variant="@(Navigation.ToBaseRelativePath(Navigation.Uri).StartsWith("logs") ? Variant.Filled : Variant.Outlined)" OnClick="@(_ => Navigation.NavigateTo("/logs"))">Logs</MudButton>
+        <MudIconButton Icon="@(LayoutService.IsDarkMode ? @Icons.Rounded.LightMode : @Icons.Material.Outlined.DarkMode)" Color="Color.Inherit" OnClick="@LayoutService.ToggleDarkMode"/>
+        <MudSpacer/>
+        <AuthorizeView>
+            <Authorized>
+                <MudButton Color="Color.Warning" Variant="Variant.Filled" Link="/account/logout" Target="_self">Logout</MudButton>
+            </Authorized>
+            <NotAuthorized>
+                <MudButton Color="Color.Warning" Variant="Variant.Filled" Link="/account/login" Target="_self">Login</MudButton>
+            </NotAuthorized>
+        </AuthorizeView>
+    </MudAppBar>
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+</MudLayout>
