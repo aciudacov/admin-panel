@@ -39,11 +39,7 @@ namespace OSS.IPTV.Ministra.Admin.Components
         private bool FilterExisting(PackageMin channel) => FilterFunc(channel, SearchExistingPackages);
         private static bool FilterFunc(PackageMin package, string searchString)
         {
-            if (string.IsNullOrWhiteSpace(searchString))
-                return true;
-            if (package.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-                return true;
-            return false;
+            return string.IsNullOrWhiteSpace(searchString) || package.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase);
         }
 
         private void OnPackageAddClick()
