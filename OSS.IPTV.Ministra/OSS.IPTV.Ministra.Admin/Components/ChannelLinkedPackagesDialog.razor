@@ -37,8 +37,8 @@
                         </RowTemplate>
                     </MudTable>
                     <MudToolBar Dense="true">
-                        <span>@SelectedPackagesWithoutChannel.Count selected </span>
-                        <span>/ @Response.AvailablePackages.Count total</span>
+                    <span>@SelectedPackagesWithoutChannel.Count selected </span>
+                    <span>/ @(Response.AvailablePackages?.Count ?? 0) total</span>
                         <span>/ @AddPending.Count pending</span>
                         <MudSpacer/>
                         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnPackageAddClick" Disabled="!SelectedPackagesWithoutChannel.Any()">Add to packages</MudButton>
@@ -79,7 +79,7 @@
                     </MudTable>
                     <MudToolBar Dense="true">
                         <span>@SelectedPackagesWithChannel.Count selected </span>
-                        <span>/ @Response.CurrentPackages.Count total</span>
+                        <span>/ @(Response.CurrentPackages?.Count ?? 0) total</span>
                         <span>/ @RemovePending.Count pending</span>
                         <MudSpacer/>
                         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnPackageRemoveClick" Disabled="!SelectedPackagesWithChannel.Any()">Remove from packages</MudButton>
