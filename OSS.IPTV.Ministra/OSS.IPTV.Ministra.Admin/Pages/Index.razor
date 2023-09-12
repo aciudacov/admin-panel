@@ -1,6 +1,8 @@
 ﻿@page "/"
 @using OSS.IPTV.Ministra.Repository.Entities
+@using OSS.IPTV.Ministra.Admin.Services
 @inject NavigationManager NavigationManager
+@inject LocalizationService Localization
 
 <PageTitle>Index</PageTitle>
 <MudContainer MaxWidth="MaxWidth.ExtraLarge">
@@ -8,7 +10,7 @@
         <MudItem xs="2">
             <MudPaper Class="pa-2">
                 <EditForm Model="Filter">
-                    <MudTextField T="string" Label="Channel name" @bind-Value="Filter.Name" />
+                    <MudTextField T="string" Label=@Localization.GetString("index","channelName") @bind-Value="Filter.Name" />
                     <MudTextField T="int?" Label="Ministra ID" @bind-Value="Filter.StalkerId" />
                     <MudSelect T="int" @bind-Value="Filter.State" Label="Channel State">
                         <MudSelectItem T="int" Value="1">Any</MudSelectItem>

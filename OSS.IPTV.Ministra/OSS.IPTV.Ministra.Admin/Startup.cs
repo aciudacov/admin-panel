@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 using OSS.IPTV.Ministra.Admin.Interfaces;
 using OSS.IPTV.Ministra.Admin.Services;
@@ -25,9 +26,11 @@ public class Startup
         services.AddServerSideBlazor();
         services.AddMudServices();
         services.AddScoped<LayoutService>();
+        services.AddSingleton<LocalizationService>();
+        services.AddLocalization();
         
         ConfigureApplicationServices(services);
-        ConfigureAuthenticationServices(services);
+        //ConfigureAuthenticationServices(services);
     }
 
     private void ConfigureApplicationServices(IServiceCollection services)
@@ -36,12 +39,11 @@ public class Startup
         services.AddScoped<IPackage, TvPackageService>();
         services.AddScoped<ILogger, LoggerService>();
         services.AddScoped<AppUserProvider>();
-        
-        services.Configure<IptvContextOptions>(conf =>
+
+        services.AddDbContext<IptvContext>(options =>
         {
-            conf.ConnectionString = Configuration.GetConnectionString("Default");
-        });
-        services.AddScoped<IptvContext>();
+            options.UseSqlServer(Configuration.GetConnectionString("Default"));
+        }, ServiceLifetime.Transient, ServiceLifetime.Transient);
     }
 
     public void Configure(IApplicationBuilder app)
@@ -54,8 +56,11 @@ public class Startup
         app.UseStaticFiles();
         app.UseRouting();
 
-        app.UseAuthentication();
-        app.UseAuthorization();
+        var context = app.ApplicationServices.GetRequiredService<IptvContext>();
+        context.Database.Migrate();
+
+        //app.UseAuthentication();
+        //app.UseAuthorization();
 
         app.UseEndpoints(endpoints =>
         {

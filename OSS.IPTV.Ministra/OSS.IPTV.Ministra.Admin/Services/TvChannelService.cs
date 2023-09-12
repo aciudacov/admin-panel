@@ -35,20 +35,20 @@ public class TvChannelService : IChannel
             MinistraId = request.MinistraId
         };
 
-        var identity = await _context.InsertWithInt32IdentityAsync(newChannel);
+        var identity = await _context.AddAsync(newChannel);
 
         var logRequest = new LogRequest
         {
             ChangeAction = ChangeAction.Insert,
             ChangeType = ChangeType.CreateChannel,
-            UpdatedItemId = identity,
+            UpdatedItemId = identity.Entity.ChannelId,
             UpdatedItemType = ItemType.Channel,
             Username = request.Username
         };
 
         await _logger.LogChanges(logRequest);
 
-        return identity;
+        return identity.Entity.ChannelId;
     }
 
     public Task DeleteTvChannel()
@@ -218,7 +218,7 @@ public class TvChannelService : IChannel
 
             foreach (var item in insertList)
             {
-                await _context.InsertAsync(item);
+                await _context.AddAsync(item);
             }
 
             var logAdd = new LogRequest

@@ -16,6 +16,11 @@ namespace OSS.IPTV.Ministra.Admin.Pages
         private ChannelFilterModel Filter { get; set; } = new();
         private MudTable<TvChannel> Table { get; set; } = new();
 
+        protected override async Task OnInitializedAsync()
+        {
+            await Localization.CachePageStrings("index");
+        }
+
         protected override void OnAfterRender(bool firstRender)
         {
             Table.SetRowsPerPage(15);

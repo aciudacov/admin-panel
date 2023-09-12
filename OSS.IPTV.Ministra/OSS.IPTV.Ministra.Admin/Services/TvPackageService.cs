@@ -38,20 +38,20 @@ public class TvPackageService : IPackage
             UserType = request.UserType
         };
 
-        var identity = await _context.InsertWithInt32IdentityAsync(newPackage);
+        var identity = await _context.AddAsync(newPackage);
 
         var logRequest = new LogRequest
         {
             ChangeAction = ChangeAction.Insert,
             ChangeType = ChangeType.CreatePackage,
-            UpdatedItemId = identity,
+            UpdatedItemId = identity.Entity.PackageId,
             UpdatedItemType = ItemType.Package,
             Username = request.Username
         };
 
         await _logger.LogChanges(logRequest);
 
-        return identity;
+        return identity.Entity.PackageId;
     }
 
     public Task DeleteTvPackage()
@@ -71,7 +71,7 @@ public class TvPackageService : IPackage
 
             foreach (var item in insertList)
             {
-                await _context.InsertAsync(item);
+                await _context.AddAsync(item);
             }
 
             var logAdd = new LogRequest

@@ -31,7 +31,7 @@ namespace OSS.IPTV.Ministra.Admin.Services
                 Username = request.Username
             };
 
-            await _context.InsertAsync(log);
+            await _context.AddAsync(log);
         }
 
         public async Task<LogFindResponse> FindLogs(LogFindRequest request)
